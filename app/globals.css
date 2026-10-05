@@ -1,0 +1,622 @@
+/* 1. RELIABLE ONLINE CDNs FOR PERSIAN FONTS (Yekan & Vazirmatn) */
+@import url('https://cdn.jsdelivr.net/npm/font-yekan@0.0.4/style.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+
+@import "tailwindcss";
+
+/* 2. TAILWIND CSS V4 THEME CONFIGURATION */
+@theme {
+  --color-dark-950: #070A0B;
+  --color-dark-900: #0C1214;
+  --color-dark-850: #111A1D;
+  --color-dark-800: #162226;
+  --color-dark-700: #23363D;
+  
+  --color-cyber-teal: #2DD4BF;
+  --color-cyber-mint: #4ADE80;
+  --color-cyber-gold: #FBBF24;
+
+  /* Prioritizes standard system fonts for English, falls back to Yekan/Vazirmatn for Persian */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, 'Yekan', 'Vazirmatn', sans-serif;
+}
+
+/* 3. GLOBAL BASE STYLES */
+@layer base {
+  *, ::before, ::after {
+    font-family: var(--font-sans);
+  }
+
+  body {
+    background-color: var(--color-dark-950);
+    color: #E2E8F0;
+    font-family: var(--font-sans);
+    direction: rtl;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.5s ease, filter 0.5s ease;
+  }
+
+  /* Ensure inputs, buttons, and textareas inherit the typography */
+  input, button, textarea, select {
+    font-family: inherit;
+  }
+
+  /* Keep mono font strictly for code / terminal widgets */
+  .font-mono, code, pre, kbd {
+    font-family: var(--font-mono, 'Fira Code', 'Courier New', Courier, monospace) !important;
+  }
+}
+
+html.light-mode {
+  filter: invert(1) hue-rotate(180deg);
+  background-color: white; 
+}
+html.light-mode body {
+  background-color: #070A0B; 
+}
+html.light-mode img, 
+html.light-mode video, 
+html.light-mode .no-invert {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.bg-circuit-grid {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(45, 212, 191, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(45, 212, 191, 0.05) 1px, transparent 1px);
+}
+
+.glass-panel {
+  background: rgba(12, 18, 20, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(45, 212, 191, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+.glass-panel-interactive {
+  background: rgba(12, 18, 20, 0.75);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(45, 212, 191, 0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-interactive:hover {
+  border-color: rgba(45, 212, 191, 0.5);
+  box-shadow: 0 10px 40px -10px rgba(45, 212, 191, 0.3);
+  transform: translateY(-4px);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-dark-900); }
+::-webkit-scrollbar-thumb { background: var(--color-dark-700); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-cyber-teal); }
+
+@keyframes heartPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+.animate-heart-pulse {
+  animation: heartPulse 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin: 1.5rem auto;
+  display: block;
+  border: 1px solid rgba(45, 212, 191, 0.2);
+}
+.post-content a {
+  color: var(--color-cyber-teal);
+  text-decoration: underline;
+}
+/* HTML TEXT FORMATTING SUPPORT */
+.post-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.post-content b, .post-content strong {
+  font-weight: 900;
+  color: #fff;
+}
+.post-content i, .post-content em {
+  font-style: italic;
+}
+.post-content u {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.post-content ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content h1, .post-content h2, .post-content h3 {
+  font-weight: 900;
+  color: #fff;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* HTML TEXT FORMATTING SUPPORT */
+.post-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.post-content b, .post-content strong {
+  font-weight: 900;
+  color: #fff;
+}
+.post-content i, .post-content em {
+  font-style: italic;
+}
+.post-content u {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.post-content ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content h1, .post-content h2, .post-content h3 {
+  font-weight: 900;
+  color: #fff;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+.post-content blockquote {
+  border-right: 4px solid var(--color-cyber-teal);
+  padding-right: 1rem;
+  color: #a1a1aa;
+  background: rgba(255,255,255,0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+.post-content code {
+  background: rgba(0,0,0,0.5);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  color: var(--color-cyber-mint);
+}
+.post-content pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.post-content pre {
+  background: rgba(0,0,0,0.8);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  direction: ltr;
+  text-align: left;
+}
+
+/* HTML TEXT FORMATTING SUPPORT */
+.post-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.post-content b, .post-content strong {
+  font-weight: 900;
+  color: #fff;
+}
+.post-content i, .post-content em {
+  font-style: italic;
+}
+.post-content u {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.post-content ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content h1, .post-content h2, .post-content h3 {
+  font-weight: 900;
+  color: #fff;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+.post-content blockquote {
+  border-right: 4px solid var(--color-cyber-teal);
+  padding-right: 1rem;
+  color: #a1a1aa;
+  background: rgba(255,255,255,0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+.post-content code {
+  background: rgba(0,0,0,0.5);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  color: var(--color-cyber-mint);
+}
+.post-content pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.post-content pre {
+  background: rgba(0,0,0,0.8);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  direction: ltr;
+  text-align: left;
+}
+
+/* HTML TEXT FORMATTING SUPPORT */
+.post-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.post-content b, .post-content strong {
+  font-weight: 900;
+  color: #fff;
+}
+.post-content i, .post-content em {
+  font-style: italic;
+}
+.post-content u {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.post-content ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content h1, .post-content h2, .post-content h3 {
+  font-weight: 900;
+  color: #fff;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+.post-content blockquote {
+  border-right: 4px solid var(--color-cyber-teal);
+  padding-right: 1rem;
+  color: #a1a1aa;
+  background: rgba(255,255,255,0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+.post-content code {
+  background: rgba(0,0,0,0.5);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  color: var(--color-cyber-mint);
+}
+.post-content pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.post-content pre {
+  background: rgba(0,0,0,0.8);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  direction: ltr;
+  text-align: left;
+}
+
+/* HTML TEXT FORMATTING SUPPORT */
+.post-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.post-content b, .post-content strong {
+  font-weight: 900;
+  color: #fff;
+}
+.post-content i, .post-content em {
+  font-style: italic;
+}
+.post-content u {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.post-content ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content h1, .post-content h2, .post-content h3 {
+  font-weight: 900;
+  color: #fff;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+.post-content blockquote {
+  border-right: 4px solid var(--color-cyber-teal);
+  padding-right: 1rem;
+  color: #a1a1aa;
+  background: rgba(255,255,255,0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+.post-content code {
+  background: rgba(0,0,0,0.5);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  color: var(--color-cyber-mint);
+}
+.post-content pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.post-content pre {
+  background: rgba(0,0,0,0.8);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  direction: ltr;
+  text-align: left;
+}
+
+/* HTML & MARKDOWN TEXT FORMATTING SUPPORT */
+.post-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.post-content b, .post-content strong {
+  font-weight: 900;
+  color: #fff;
+}
+.post-content i, .post-content em {
+  font-style: italic;
+}
+.post-content u {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.post-content ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content h1, .post-content h2, .post-content h3 {
+  font-weight: 900;
+  color: #fff;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+.post-content blockquote {
+  border-right: 4px solid var(--color-cyber-teal);
+  padding-right: 1rem;
+  color: #a1a1aa;
+  background: rgba(255,255,255,0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+.post-content code {
+  background: rgba(0,0,0,0.5);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  color: var(--color-cyber-mint);
+}
+.post-content pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.post-content pre {
+  background: rgba(0,0,0,0.8);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  direction: ltr;
+  text-align: left;
+}
+
+/* HTML & MARKDOWN TEXT FORMATTING SUPPORT */
+.post-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.post-content b, .post-content strong {
+  font-weight: 900;
+  color: #fff;
+}
+.post-content i, .post-content em {
+  font-style: italic;
+}
+.post-content u {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.post-content ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content h1, .post-content h2, .post-content h3 {
+  font-weight: 900;
+  color: #fff;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+.post-content blockquote {
+  border-right: 4px solid var(--color-cyber-teal);
+  padding-right: 1rem;
+  color: #a1a1aa;
+  background: rgba(255,255,255,0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+.post-content code {
+  background: rgba(0,0,0,0.5);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  color: var(--color-cyber-mint);
+}
+.post-content pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.post-content pre {
+  background: rgba(0,0,0,0.8);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  direction: ltr;
+  text-align: left;
+}
+
+/* HTML & MARKDOWN TEXT FORMATTING SUPPORT */
+.post-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.post-content b, .post-content strong {
+  font-weight: 900;
+  color: #fff;
+}
+.post-content i, .post-content em {
+  font-style: italic;
+}
+.post-content u {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.post-content ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.post-content h1, .post-content h2, .post-content h3 {
+  font-weight: 900;
+  color: #fff;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+.post-content blockquote {
+  border-right: 4px solid var(--color-cyber-teal);
+  padding-right: 1rem;
+  color: #a1a1aa;
+  background: rgba(255,255,255,0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+.post-content code {
+  background: rgba(0,0,0,0.5);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  color: var(--color-cyber-mint);
+}
+.post-content pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.post-content pre {
+  background: rgba(0,0,0,0.8);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  direction: ltr;
+  text-align: left;
+}
