@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { clearAuth } from "@/redux/slices/authSlice";
 import { cessaService } from "@/lib/api/services/client/cessaApi.service";
 import { getImageUrl } from "@/lib/utils";
-import { Home, User, CreditCard, Users, LogOut, Terminal, Award, Megaphone, Menu, X, BookOpen, Tag } from "lucide-react";
+import { Home, User, CreditCard, Users, LogOut, Terminal, Award, Megaphone, Menu, X, BookOpen, Tag, Activity } from "lucide-react";
 import Navbar from "@/_components/layout/Navbar";
 
 export default function DashboardLayout({ children }) {
@@ -56,7 +56,8 @@ export default function DashboardLayout({ children }) {
 
   if (role === "ContentCreator") navItems.push({ href: "/creator-guide", label: "آموزش", icon: BookOpen });
   if (role === "Admin") {
-    navItems.push({ href: "/admin/users", label: "مدیریت و جستجوی کاربران", icon: Users });
+    navItems.push({ href: "/admin/stats", label: "آمار جامع سیستم", icon: Activity });
+    navItems.push({ href: "/admin/users", label: "مدیریت کاربران", icon: Users });
     navItems.push({ href: "/admin/categories", label: "مدیریت دسته‌بندی‌ها", icon: Tag });
     navItems.push({ href: "/admin/ads", label: "مدیریت تبلیغات", icon: Megaphone });
     navItems.push({ href: "/admin/halloffame", label: "تالار مفاخر", icon: Award });
@@ -79,7 +80,7 @@ export default function DashboardLayout({ children }) {
           <div className="relative z-10 overflow-y-auto pr-2 mt-8 md:mt-0" style={{ scrollbarWidth: 'none' }}>
             <div className="flex flex-col items-center pb-8 pt-4 border-b border-white/5">
               <div className="relative mb-4">
-                <div className="w-24 h-24 rounded-full bg-dark-900 border-2 border-cyber-teal flex items-center justify-center font-bold text-cyber-teal text-3xl shadow-[0_0_25px_rgba(45,212,191,0.2)] overflow-hidden">
+                <div className="w-24 h-24 rounded-full bg-dark-900 border-2 border-cyber-teal flex items-center justify-center font-bold text-cyber-teal text-3xl shadow-[0_0_25px_rgba(45,212,191,0.25)] overflow-hidden">
                   {profileData?.profilePictureUrl ? <img src={getImageUrl(profileData.profilePictureUrl)} className="w-full h-full object-cover" /> : (displayName[0])}
                 </div>
               </div>

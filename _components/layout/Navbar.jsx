@@ -64,7 +64,7 @@ export default function Navbar() {
             </Link>
           ))}
           <a 
-            href="https://cessaland.ir/tools/" 
+            href="https://tools.cessaland.ir" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="hover:text-cyber-teal text-gray-300 transition-colors flex items-center gap-1"
@@ -126,7 +126,7 @@ export default function Navbar() {
               </Link>
             ))}
             <a 
-              href="https://cessaland.ir/tools/" 
+              href="https://tools.cessaland.ir" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="py-3 px-4 rounded-xl text-base font-bold text-gray-200 hover:text-cyber-teal hover:bg-white/10 flex items-center justify-between"

@@ -10,6 +10,8 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function DashboardPage() {
   const { user, role } = useAuth();
@@ -181,6 +183,7 @@ export default function DashboardPage() {
         )}
       </div>
 
+      {/* POST MODAL */}
       {postModal.open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
           <form onSubmit={handleSavePost} className="glass-panel w-full max-w-lg rounded-3xl p-6 border-cyber-teal/40 space-y-4 max-h-[90vh] overflow-y-auto">
@@ -211,6 +214,7 @@ export default function DashboardPage() {
         </div>
       )}
 
+      {/* EVENT MODAL */}
       {eventModal.open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
           <form onSubmit={handleSaveEvent} className="glass-panel w-full max-w-lg rounded-3xl p-6 border-cyber-mint/40 space-y-4 max-h-[90vh] overflow-y-auto">
@@ -249,6 +253,7 @@ export default function DashboardPage() {
         </div>
       )}
 
+      {/* MANAGE ENROLLMENTS MODAL */}
       {manageModal.open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
           <div className="glass-panel w-full max-w-3xl rounded-3xl p-6 border-amber-400/40 space-y-4 max-h-[90vh] overflow-y-auto">
@@ -290,6 +295,7 @@ export default function DashboardPage() {
         </div>
       )}
 
+      {/* ENROLL MODAL */}
       {enrollModal.open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
           <form onSubmit={handleEnrollSubmit} className="glass-panel w-full max-w-md rounded-3xl p-6 border-cyber-mint/40 space-y-4">
@@ -312,7 +318,9 @@ export default function DashboardPage() {
         </div>
       )}
 
+      {/* DASHBOARD GRIDS */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* POSTS LIST */}
         <div className="lg:col-span-8 space-y-6">
           <div className="glass-panel p-6 rounded-3xl border-white/5 flex flex-col h-full shadow-[0_0_20px_rgba(0,0,0,0.2)]">
             <div className="flex justify-between items-center mb-6">
@@ -352,15 +360,17 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* EVENTS LIST */}
         <div className="lg:col-span-4 glass-panel p-6 rounded-3xl border-white/5 space-y-6 shadow-[0_0_20px_rgba(0,0,0,0.2)]">
           <h3 className="font-bold text-white text-lg mb-6 flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-cyber-mint animate-ping" />
-            <span>رویدادهای پیش‌رو</span>
+            <span>رویدادهای سیستم</span>
           </h3>
 
           <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
             {displayEvents.map((ev) => {
               const isEventOwner = role === "Admin" || (role === "ContentCreator" && ev.creatorId === user?.id);
+              const isPastEvent = new Date(ev.eventDate) < new Date();
 
               return (
                 <div key={ev.id} className="rounded-2xl p-5 bg-dark-900 border border-cyber-mint/20 hover:border-cyber-mint/50 transition-colors shadow-[0_0_15px_rgba(74,222,128,0.05)] flex flex-col text-center relative group">
@@ -382,9 +392,15 @@ export default function DashboardPage() {
                       </button>
                     ) : (
                       !ev.isEnrolledByCurrentUser ? (
-                        <button onClick={() => handleEnrollClick(ev.id)} className="w-full py-2.5 bg-cyber-mint hover:bg-green-400 text-dark-950 text-sm font-bold rounded-xl transition-all border border-cyber-mint/30 shadow-[0_0_15px_rgba(74,222,128,0.2)] text-center block cursor-pointer">
-                          ثبت‌نام در رویداد
-                        </button>
+                        isPastEvent ? (
+                          <div className="w-full py-2.5 bg-dark-800 text-gray-500 text-sm font-bold rounded-xl border border-white/5 text-center block cursor-not-allowed">
+                            مهلت ثبت‌نام پایان یافته
+                          </div>
+                        ) : (
+                          <button onClick={() => handleEnrollClick(ev.id)} className="w-full py-2.5 bg-cyber-mint hover:bg-green-400 text-dark-950 text-sm font-bold rounded-xl transition-all border border-cyber-mint/30 shadow-[0_0_15px_rgba(74,222,128,0.2)] text-center block cursor-pointer">
+                            ثبت‌نام در رویداد
+                          </button>
+                        )
                       ) : (
                         <div className="w-full py-2.5 bg-dark-800 text-emerald-400 text-sm font-bold rounded-xl border border-emerald-500/20 text-center block">
                           ثبت‌نام شده

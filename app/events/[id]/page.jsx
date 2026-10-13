@@ -3,12 +3,23 @@ import React, { useEffect, useState, use } from "react";
 import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import mermaid from 'mermaid';
 import { Calendar, CreditCard, UserPlus, Check, FileText, Clock, X, Lock, User } from "lucide-react";
 import { cessaService } from "@/lib/api/services/client/cessaApi.service";
 import Navbar from "@/_components/layout/Navbar";
 import { useAuth } from "@/hooks/useAuth";
 import { getImageUrl } from "@/lib/utils";
+
+const sanitizeSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    '*': [...(defaultSchema.attributes['*'] || []), 'className', 'style', 'dir', 'align']
+  }
+};
 
 export default function EventDetailPage({ params }) {
   const resolvedParams = use(params);
@@ -47,6 +58,7 @@ export default function EventDetailPage({ params }) {
   const isCreatorOfEvent = role === "ContentCreator" && eventData.creatorId === user?.id;
   const isAdmin = role === "Admin";
   const canManage = isCreatorOfEvent || isAdmin;
+  const isPastEvent = new Date(eventData.eventDate) < new Date();
 
   return (
     <div className="min-h-screen relative pb-20 font-sans">
@@ -78,9 +90,10 @@ export default function EventDetailPage({ params }) {
             </div>
           </div>
 
-          <div className="text-gray-200 text-base sm:text-lg md:text-xl leading-9 sm:leading-10 mb-12 post-content" dir="auto">
+          <div className="text-gray-200 text-base sm:text-lg md:text-xl mb-12 post-content" dir="auto">
             <ReactMarkdown 
-              remarkPlugins={[remarkGfm]}
+              remarkPlugins={[remarkGfm, remarkBreaks]}
+              rehypePlugins={[rehypeRaw, [rehypeSanitize, sanitizeSchema]]}
               components={{
                 code({node, inline, className, children, ...props}) {
                   const match = /language-(\w+)/.exec(className || '');
@@ -91,7 +104,7 @@ export default function EventDetailPage({ params }) {
                 }
               }}
             >
-              {eventData.description}
+              {eventData.description ? eventData.description.replace(/\n{3,}/g, '\n\n') : ''}
             </ReactMarkdown>
           </div>
 
@@ -138,14 +151,26 @@ export default function EventDetailPage({ params }) {
                     <><Clock size={22}/> <span>در انتظار تایید رسید</span></>}
                 </div>
               ) : (
-                <Link href="/dashboard" className="w-full md:w-auto px-9 py-4 bg-cyber-mint text-dark-950 font-bold rounded-2xl flex items-center justify-center gap-2 hover:bg-green-400 transition-all shadow-[0_0_20px_rgba(74,222,128,0.3)] text-base sm:text-lg">
-                  <UserPlus size={22} /><span>ورود به داشبورد و ثبت‌نام</span>
-                </Link>
+                isPastEvent ? (
+                  <div className="w-full md:w-auto px-9 py-4 bg-dark-800 text-gray-500 font-bold rounded-2xl flex items-center justify-center gap-2 border border-white/10 text-base sm:text-lg cursor-not-allowed">
+                    <span>مهلت ثبت‌نام پایان یافته</span>
+                  </div>
+                ) : (
+                  <Link href="/dashboard" className="w-full md:w-auto px-9 py-4 bg-cyber-mint text-dark-950 font-bold rounded-2xl flex items-center justify-center gap-2 hover:bg-green-400 transition-all shadow-[0_0_20px_rgba(74,222,128,0.3)] text-base sm:text-lg">
+                    <UserPlus size={22} /><span>ورود به داشبورد و ثبت‌نام</span>
+                  </Link>
+                )
               )
             ) : (
-              <Link href="/login" className="w-full md:w-auto px-9 py-4 bg-dark-800 text-white font-bold rounded-2xl flex items-center justify-center gap-2 hover:bg-dark-700 border border-white/10 transition-all text-base sm:text-lg">
-                <UserPlus size={22} /><span>ورود جهت ثبت نام</span>
-              </Link>
+              isPastEvent ? (
+                  <div className="w-full md:w-auto px-9 py-4 bg-dark-800 text-gray-500 font-bold rounded-2xl flex items-center justify-center gap-2 border border-white/10 text-base sm:text-lg cursor-not-allowed">
+                    <span>مهلت ثبت‌نام پایان یافته</span>
+                  </div>
+              ) : (
+                  <Link href="/login" className="w-full md:w-auto px-9 py-4 bg-dark-800 text-white font-bold rounded-2xl flex items-center justify-center gap-2 hover:bg-dark-700 border border-white/10 transition-all text-base sm:text-lg">
+                    <UserPlus size={22} /><span>ورود جهت ثبت نام</span>
+                  </Link>
+              )
             )}
           </div>
         </div>

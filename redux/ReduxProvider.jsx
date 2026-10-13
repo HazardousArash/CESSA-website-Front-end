@@ -17,18 +17,17 @@ function AuthInitializer({ children }) {
       
       const localAccessToken = typeof window !== "undefined" ? localStorage.getItem("cessa_access_token") : null;
       const localRefreshToken = typeof window !== "undefined" ? localStorage.getItem("cessa_refresh_token") : null;
-      const storedRole = typeof window !== "undefined" ? localStorage.getItem("cessa_role") : "student";
-      const activeRole = storedRole ? (storedRole.toLowerCase() === "admin" ? "admin" : storedRole.toLowerCase() === "contentcreator" ? "creator" : "student") : "student";
-
+      
+      // Fast path: Token is valid and has role mapping
       if (localAccessToken && !isTokenExpired(localAccessToken)) {
         const decoded = decodeAccessToken(localAccessToken);
-        let cachedUser = null;
-        try {
-          const rawUser = localStorage.getItem("cessa_user");
-          if (rawUser) cachedUser = JSON.parse(rawUser);
-        } catch {}
-
         if (decoded?.role) {
+          let cachedUser = null;
+          try {
+            const rawUser = localStorage.getItem("cessa_user");
+            if (rawUser) cachedUser = JSON.parse(rawUser);
+          } catch {}
+
           dispatch(setSession({
             token: localAccessToken,
             role: decoded.role,
@@ -38,8 +37,19 @@ function AuthInitializer({ children }) {
         }
       }
 
+      // No refresh token available, kill session silently
+      if (!localRefreshToken) {
+         clearClientSession();
+         dispatch(clearAuth());
+         return;
+      }
+
+      // Slow path: Need to fetch a new token pairing
       isRefreshingRef.current = true;
       try {
+        const storedRole = typeof window !== "undefined" ? localStorage.getItem("cessa_role") : "student";
+        const activeRole = storedRole ? (storedRole.toLowerCase() === "admin" ? "admin" : storedRole.toLowerCase() === "contentcreator" ? "creator" : "student") : "student";
+
         const res = await cessaService.auth.refresh(activeRole, { accessToken: localAccessToken, refreshToken: localRefreshToken });
         
         if (res?.success && res?.data) {

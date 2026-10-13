@@ -4,11 +4,22 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import mermaid from 'mermaid';
 import { ArrowRight, Calendar, Heart, MessageSquare, Send, Trash2, X, Reply, ExternalLink, Bookmark, User } from "lucide-react";
 import { cessaService } from "@/lib/api/services/client/cessaApi.service";
 import { getImageUrl } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+
+const sanitizeSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    '*': [...(defaultSchema.attributes['*'] || []), 'className', 'style', 'dir', 'align']
+  }
+};
 
 export default function PostDetailPage({ params }) {
   const routeParams = useParams();
@@ -75,7 +86,11 @@ export default function PostDetailPage({ params }) {
         </div>
         <div className="flex-1">
           <div className="flex justify-between items-start mb-2"><span className="font-bold text-white">{c.userName}</span><span className="text-xs text-gray-400 font-sans">{new Date(c.createdAt).toLocaleDateString("fa-IR")}</span></div>
-          <p className="text-base text-gray-200 leading-8 mb-4 post-content" dir="auto"><ReactMarkdown remarkPlugins={[remarkGfm]}>{c.text}</ReactMarkdown></p>
+          <p className="text-base text-gray-200 leading-8 mb-4 post-content" dir="auto">
+            <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeRaw, [rehypeSanitize, sanitizeSchema]]}>
+              {c.text ? c.text.replace(/\n{3,}/g, '\n\n') : ''}
+            </ReactMarkdown>
+          </p>
           <div className="flex items-center gap-5 text-sm">
             {isAuthenticated && !isReply && (
               <button onClick={() => setReplyTo({id: c.id, userName: c.userName})} className="text-gray-400 hover:text-cyber-teal flex items-center gap-1.5 cursor-pointer font-medium"><Reply size={16}/> پاسخ</button>
@@ -109,9 +124,10 @@ export default function PostDetailPage({ params }) {
             </div>
           </div>
 
-          <div className="text-gray-200 text-base sm:text-lg md:text-xl leading-9 sm:leading-10 space-y-6 mb-10 post-content" dir="auto">
+          <div className="text-gray-200 text-base sm:text-lg md:text-xl mb-10 post-content" dir="auto">
             <ReactMarkdown 
-              remarkPlugins={[remarkGfm]}
+              remarkPlugins={[remarkGfm, remarkBreaks]}
+              rehypePlugins={[rehypeRaw, [rehypeSanitize, sanitizeSchema]]}
               components={{
                 code({node, inline, className, children, ...props}) {
                   const match = /language-(\w+)/.exec(className || '');
@@ -122,7 +138,7 @@ export default function PostDetailPage({ params }) {
                 }
               }}
             >
-              {post.content}
+              {post.content ? post.content.replace(/\n{3,}/g, '\n\n') : ''}
             </ReactMarkdown>
           </div>
           
